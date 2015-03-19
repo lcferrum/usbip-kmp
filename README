@@ -1,0 +1,79 @@
+USB/IP kernel modules build script for Sailfish OS
+
+1. License
+----------
+Copyright (c) 2015 Lcferrum
+
+This program comes with no warranty.
+You must use this program at your own risk.
+Licensed under BSD license - see LICENSE file for details.
+
+2. About
+--------
+USB/IP kernel modules build script with accompanying .spec file. Builds kernel
+module RPM package (aka KMP) compatible with Sailfish OS.
+
+3. Where to get
+---------------
+Main project homepage is at GitHub:
+
+	https://github.com/lcferrum/usbip-kmp
+	
+Or you can download already built USB/IP kernel module RPMs from OpenRepos:
+
+	https://openrepos.net/content/lcferrum/usbip-kernel-modules
+
+4. Prerequisites
+----------------
+You should be familiar with Sailfish OS SDK and have it already installed.
+If not, go to https://sailfishos.org/ to download latest SDK version and read
+some FAQs and guides on using that SDK. At least you should know how to run Mer
+build engine and connect to it over SSL.
+
+Also you will need Sailfish OS kernel sources and (optional) Module.symvers
+file. Both sources and Module.symvers file should match OS version
+you are using (or will be used with USB/IP kernel modules). Write down Sailfish
+OS version (Settings->System->About product) and it's kernel version
+('uname -r' in Terminal app) - build script will need this information.
+
+You can download Sailfish OS kernel sources (.tar.gz archive) from KonstaT's
+repo:
+
+	https://github.com/KonstaT/sailfishos_kernel_jolla_msm8930
+	
+Or get official Jolla's DVD with open source packages. Kernel tarball is in
+kernel-adaptation-sbj directory on this DVD. Contents of this DVD are also
+available online:
+
+	http://releases.sailfishos.org/sources
+	
+Module.symvers for particular OS version is available elsewhere. Google for it.
+Without it build script will have to rebuild whole kernel. It's a long process
+(up to several hours) and will require a lot of Mer VM's disc space. It will
+actually require more disc space than VM curently provides (4 Gb as for
+SDK Beta 1502). So edit VM's HDD size (with VBoxManage) and expand main
+partition (with something like gparted live CD). 8 Gb should be enough.
+	
+5. Usage
+--------      
+Connect to Mer build engine and run the build script like this (.spec file
+should be in the same directory as script):                        
+	
+	./build-usbip-kernel-modules.sh KERNEL_SOURCE SAILFISH_OS_VERSION ACTUAL_JOLLA_KERNEL_VERSION [MODULE_SYMVERS]
+	
+KERNEL_SOURCE and MODULE_SYMVERS are paths to kernel tarball and Module.symvers
+files respectively. MODULE_SYMVERS parameter is optional, but without it RPM
+build would take a lot of time (see 'Prerequisites' section).
+
+SAILFISH_OS_VERSION is Sailfish OS version for which kernel modules are being
+built. ACTUAL_JOLLA_KERNEL_VERSION - it's kernel version. Kernel sources
+and Module.symvers file (if present) should match Sailfish OS version!
+Sailfish OS version can be found in Settings->System->About product section of
+Jolla phone. Type 'uname -r' in Jolla Terminal app to find out OS' kernel
+version.
+
+After the script finishes, there will be several new directories created by
+rpmbuild process in the same directory as the script. RPM package with USB/IP
+kernel modules will be in the RPMS/armv7hl directory:
+
+	usbip-kernel-modules-X.X.X.X-1.jolla.armv7hl.rpm
