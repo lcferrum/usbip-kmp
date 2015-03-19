@@ -13,6 +13,15 @@ Licensed under BSD license - see LICENSE file for details.
 USB/IP kernel modules build script with accompanying .spec file. Builds kernel
 module RPM package (aka KMP) compatible with Sailfish OS.
 
+Resulting RPM contains following modules:
+
+	- usbip-core.ko
+	- usbip-host.ko
+	- vhci-hcd.ko
+	
+RPM will just install these modules on the system and update module
+dependencies. It won't do modprobe, install services or anything similar.
+
 3. Where to get
 ---------------
 Main project homepage is at GitHub:
@@ -28,7 +37,7 @@ Or you can download already built USB/IP kernel module RPMs from OpenRepos:
 You should be familiar with Sailfish OS SDK and have it already installed.
 If not, go to https://sailfishos.org/ to download latest SDK version and read
 some FAQs and guides on using that SDK. At least you should know how to run Mer
-build engine and connect to it over SSL.
+build engine and connect to it over SSH.
 
 Also you will need Sailfish OS kernel sources and (optional) Module.symvers
 file. Both sources and Module.symvers file should match OS version
@@ -77,3 +86,5 @@ rpmbuild process in the same directory as the script. RPM package with USB/IP
 kernel modules will be in the RPMS/armv7hl directory:
 
 	usbip-kernel-modules-X.X.X.X-1.jolla.armv7hl.rpm
+	
+Where X.X.X.X is Sailfish OS version for which it was built.
