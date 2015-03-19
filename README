@@ -13,7 +13,7 @@ Licensed under BSD license - see LICENSE file for details.
 USB/IP kernel modules build script with accompanying .spec file. Builds kernel
 module RPM package (aka KMP) compatible with Sailfish OS.
 
-Resulting RPM contains following modules:
+Resulting RPM supports relocation and contains following modules:
 
 	- usbip-core.ko
 	- usbip-host.ko
