@@ -13,7 +13,8 @@ Licensed under BSD license - see LICENSE file for details.
 USB/IP kernel modules build script with accompanying .spec file. Builds kernel
 module RPM package (aka KMP) compatible with Sailfish OS.
 
-Resulting RPM supports relocation and contains following modules:
+Resulting RPM supports relocation (default relocation prefix is 
+/lib/modules/KERNEL_VERSION) and contains following modules:
 
 	- usbip-core.ko
 	- usbip-host.ko
@@ -41,9 +42,9 @@ build engine and connect to it over SSH.
 
 Also you will need Sailfish OS kernel sources and (optional) Module.symvers
 file. Both sources and Module.symvers file should match OS version
-you are using (or will be used with USB/IP kernel modules). Write down Sailfish
-OS version (Settings->System->About product) and it's kernel version
-('uname -r' in Terminal app) - build script will need this information.
+that will be used with USB/IP kernel modules. Write down Sailfish OS version
+(Settings->System->About product) and it's kernel version ('uname -r' in
+Terminal app) - build script will need this information.
 
 You can download Sailfish OS kernel sources (.tar.gz archive) from KonstaT's
 repo:
@@ -59,9 +60,9 @@ available online:
 Module.symvers for particular OS version is available elsewhere. Google for it.
 Without it build script will have to rebuild whole kernel. It's a long process
 (up to several hours) and will require a lot of Mer VM's disc space. It will
-actually require more disc space than VM curently provides (4 Gb as for
+actually require more disc space than VM curently provides (4 GB as for
 SDK Beta 1502). So edit VM's HDD size (with VBoxManage) and expand main
-partition (with something like gparted live CD). 8 Gb should be enough.
+partition (with something like gparted live CD). 8 GB should be enough.
 	
 5. Usage
 --------      
@@ -88,3 +89,25 @@ kernel modules will be in the RPMS/armv7hl directory:
 	usbip-kernel-modules-X.X.X.X-1.jolla.armv7hl.rpm
 	
 Where X.X.X.X is Sailfish OS version for which it was built.
+
+5. Sailfish OS kernel versions
+------------------------------
+In case when kernel sources for the target Sailfish OS version are not
+available, USB/IP kernel modules can be built using latest available sources.
+Though it's not guaranteed that resulting modules will work with target
+Sailfish OS version. Use the following table to get full kernel version string
+for the available Sailfish OS kernel sources (because it's actually not
+mentioned anywhere in the source code):
+
+    Sailfish OS version   kernel version
+    -------------------   -------------------
+    1.1.1.27              3.4.98.20141031.3
+    1.1.2.16              3.4.98.20141219.1.1
+    1.1.6.27              3.4.106.20150416.1
+
+To install resulting RPM use relocation prefix:
+
+	rpm -ivh --prefix=/lib/modules/$(uname -r) usbip-kernel-modules-X.X.X.X-1.jolla.armv7hl.rpm
+	
+You'll need to use --force option with modprobe to add modules to kernel when
+modules' version doesn't match kernel version.
